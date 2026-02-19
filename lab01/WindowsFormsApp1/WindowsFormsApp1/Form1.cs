@@ -56,7 +56,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        const decimal dt = 0.1M;
+        const decimal dt = 0.000001M;
 
         private void timer1_Tick(object sender, EventArgs e)
         {
