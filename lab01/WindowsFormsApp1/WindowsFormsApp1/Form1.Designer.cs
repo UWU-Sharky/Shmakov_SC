@@ -46,6 +46,9 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.Cancle = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.edDt = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.edHieght)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.edAngle)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.edSpeed)).BeginInit();
@@ -53,6 +56,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.edWeight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.edDt)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -67,6 +72,11 @@
             // edHieght
             // 
             this.edHieght.Location = new System.Drawing.Point(72, 17);
+            this.edHieght.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             this.edHieght.Name = "edHieght";
             this.edHieght.Size = new System.Drawing.Size(120, 20);
             this.edHieght.TabIndex = 1;
@@ -100,6 +110,11 @@
             // edSpeed
             // 
             this.edSpeed.Location = new System.Drawing.Point(72, 69);
+            this.edSpeed.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
             this.edSpeed.Name = "edSpeed";
             this.edSpeed.Size = new System.Drawing.Size(120, 20);
             this.edSpeed.TabIndex = 5;
@@ -142,6 +157,11 @@
             // edWeight
             // 
             this.edWeight.Location = new System.Drawing.Point(272, 43);
+            this.edWeight.Maximum = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             this.edWeight.Name = "edWeight";
             this.edWeight.Size = new System.Drawing.Size(120, 20);
             this.edWeight.TabIndex = 9;
@@ -175,8 +195,7 @@
             // 
             chartArea1.Name = "ChartArea1";
             this.chart.ChartAreas.Add(chartArea1);
-            this.chart.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.chart.Location = new System.Drawing.Point(0, 101);
+            this.chart.Location = new System.Drawing.Point(0, 103);
             this.chart.Name = "chart";
             series1.BorderColor = System.Drawing.Color.White;
             series1.BorderWidth = 3;
@@ -187,13 +206,12 @@
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chart.Series.Add(series1);
-            this.chart.Size = new System.Drawing.Size(584, 360);
+            this.chart.Size = new System.Drawing.Size(734, 465);
             this.chart.TabIndex = 11;
             this.chart.Text = "chart";
             // 
             // timer1
             // 
-            this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Cancle
@@ -203,12 +221,14 @@
             this.Cancle.Name = "Cancle";
             this.Cancle.Size = new System.Drawing.Size(75, 23);
             this.Cancle.TabIndex = 12;
-            this.Cancle.Text = "Отмена";
+            this.Cancle.Text = "Очистить";
             this.Cancle.UseVisualStyleBackColor = false;
             this.Cancle.Click += new System.EventHandler(this.Cancle_Click);
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.edDt);
+            this.panel1.Controls.Add(this.label6);
             this.panel1.Controls.Add(this.edHieght);
             this.panel1.Controls.Add(this.Cancle);
             this.panel1.Controls.Add(this.label1);
@@ -224,14 +244,60 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(584, 100);
+            this.panel1.Size = new System.Drawing.Size(734, 100);
             this.panel1.TabIndex = 13;
+            // 
+            // edDt
+            // 
+            this.edDt.DecimalPlaces = 5;
+            this.edDt.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            327680});
+            this.edDt.Location = new System.Drawing.Point(272, 69);
+            this.edDt.Maximum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.edDt.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            327680});
+            this.edDt.Name = "edDt";
+            this.edDt.Size = new System.Drawing.Size(120, 20);
+            this.edDt.TabIndex = 14;
+            this.edDt.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(233, 71);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(33, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Шаг: ";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(0, 574);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(734, 149);
+            this.dataGridView1.TabIndex = 13;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 461);
+            this.ClientSize = new System.Drawing.Size(734, 735);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.chart);
             this.Name = "Form1";
@@ -244,6 +310,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.edDt)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -265,6 +333,9 @@
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button Cancle;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.NumericUpDown edDt;
+        private System.Windows.Forms.Label label6;
     }
 }
 
