@@ -51,6 +51,7 @@ namespace WindowsFormsApp1
         DataTable table = new DataTable();
         private void ShowResults()
         {
+            table.Columns.Add("Шаг", typeof(decimal));
             table.Columns.Add("Дальность полёта, м", typeof(decimal));
             table.Columns.Add("Максимальная высота, м", typeof(decimal));
             table.Columns.Add("Скорость в конечной точке, м/с", typeof(decimal));
@@ -70,24 +71,19 @@ namespace WindowsFormsApp1
                 x = 0;
                 y = edHieght.Value;
                 v0 = edSpeed.Value;
-                a = (double)edAngle.Value * Math.PI / 180;
+                double a = (double)edAngle.Value * Math.PI / 180;
                 cosa = (decimal)Math.Cos(a);
                 sina = (decimal)Math.Sin(a);
                 S = edSize.Value;
                 m = edWeight.Value;
-                k = 0.5M * C * rho * S / m;
+                k = C * rho * S / (2 * m);
                 vx = v0 * cosa;
                 vy = v0 * sina;
                 nowSeries.Points.AddXY(x, y);
-                maxHieght = Math.Max(maxHieght, y);
-                chart.Invalidate();
                 timer1.Start();
             }
         }
-
-
-
-        decimal dt;
+            decimal dt;
 
         private void timer1_Tick(object sender, EventArgs e)
         {
@@ -100,16 +96,17 @@ namespace WindowsFormsApp1
             y = y + vy * dt;
             nowSeries.Points.AddXY(x, y);
             maxHieght = Math.Max(maxHieght, y);
+            L = Math.Max(L, x);
             chart.Invalidate();
             if (y <= 0)
             {
                 timer1.Stop();
                 chart.Series.Add(nowSeries);
                 maxHieght = Math.Max(maxHieght, y);
-                L = ((v0 * v0) * (decimal)Math.Sin(2 * a)) / g;
+                L = Math.Max(L, x);
                 double endV = Math.Sqrt(Math.Pow(Convert.ToDouble(vx), 2) + Math.Pow(Convert.ToDouble(vy), 2));
                 
-                table.Rows.Add(Math.Round(L, 4), Math.Round(maxHieght, 4), Math.Round(endV, 4));
+                table.Rows.Add(dt ,Math.Round(L, 4), Math.Round(maxHieght, 4), Math.Round(endV, 4));
 
             }
         }

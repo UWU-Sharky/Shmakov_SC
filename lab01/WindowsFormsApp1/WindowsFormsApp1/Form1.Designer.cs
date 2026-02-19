@@ -71,6 +71,7 @@
             // 
             // edHieght
             // 
+            this.edHieght.DecimalPlaces = 1;
             this.edHieght.Location = new System.Drawing.Point(72, 17);
             this.edHieght.Maximum = new decimal(new int[] {
             50,
@@ -88,6 +89,7 @@
             // 
             // edAngle
             // 
+            this.edAngle.DecimalPlaces = 1;
             this.edAngle.Location = new System.Drawing.Point(72, 43);
             this.edAngle.Name = "edAngle";
             this.edAngle.Size = new System.Drawing.Size(120, 20);
@@ -109,6 +111,7 @@
             // 
             // edSpeed
             // 
+            this.edSpeed.DecimalPlaces = 1;
             this.edSpeed.Location = new System.Drawing.Point(72, 69);
             this.edSpeed.Maximum = new decimal(new int[] {
             50,
@@ -135,6 +138,7 @@
             // 
             // edSize
             // 
+            this.edSize.DecimalPlaces = 1;
             this.edSize.Location = new System.Drawing.Point(272, 17);
             this.edSize.Name = "edSize";
             this.edSize.Size = new System.Drawing.Size(120, 20);
@@ -156,6 +160,7 @@
             // 
             // edWeight
             // 
+            this.edWeight.DecimalPlaces = 1;
             this.edWeight.Location = new System.Drawing.Point(272, 43);
             this.edWeight.Maximum = new decimal(new int[] {
             30,
@@ -212,6 +217,7 @@
             // 
             // timer1
             // 
+            this.timer1.Interval = 10;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Cancle
