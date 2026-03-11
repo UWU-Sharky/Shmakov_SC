@@ -1,0 +1,12 @@
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\bin\Debug\WindowsFormsApp3.exe.config
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\bin\Debug\WindowsFormsApp3.exe
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\bin\Debug\WindowsFormsApp3.pdb
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.csproj.AssemblyReference.cache
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.Form1.resources
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.Properties.Resources.resources
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.csproj.GenerateResource.cache
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.csproj.CoreCompileInputs.cache
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.exe
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.pdb
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.exe.config
+G:\Code\GitHubRep\Shmakov_SC\lab03\lab03\WindowsFormsApp3\WindowsFormsApp3\obj\Debug\WindowsFormsApp3.Form2.resources
