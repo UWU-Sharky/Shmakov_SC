@@ -16,17 +16,21 @@ namespace WindowsFormsApp2
         public Form1()
         {
             InitializeComponent();
-            answers.Add("Да");
-            answers.Add("Возможно");
-            answers.Add("Скорее да, чем нет");
-            answers.Add("Наверное");
-            answers.Add("Скорее нет, чем да");
-            answers.Add("Мало вероятно");
-            answers.Add("Нет");
-            answers.Add("Спросите позже");
         }
 
-        public static List<String> answers = new List<String>();
+        public static Dictionary<String, double> answers = new Dictionary<String, double>()
+        {
+            {"Да", 0.125},
+            {"Возможно", 0.125},
+            {"Скорее да, чем нет", 0.125},
+            {"Наверное", 0.125},
+            {"Скорее нет, чем да", 0.125},
+            {"Мало вероятно", 0.125},
+            {"Нет", 0.125},
+            {"Спросите позже", 0.125},
+
+        };
+
 
         private static BigInteger lastSeed = 1;
 
@@ -46,14 +50,13 @@ namespace WindowsFormsApp2
         public static string Answer()
         {
             double x = LKG();
-            for(int i = 0; i < answers.Count(); i++)
+            foreach(var ans in answers)
             {
-                x = x - (double)(1.0 / answers.Count());
+                x = x - (double)(ans.Value);
                 if (x <= 0)
                 {
-                    return(answers[i]);
+                    return(ans.Key);
                 }
-
             }
             return "Error";
         }
