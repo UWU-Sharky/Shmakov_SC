@@ -1,0 +1,13 @@
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\WindowsFormsApp2.exe.config
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\WindowsFormsApp2.exe
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\WindowsFormsApp2.pdb
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.csproj.AssemblyReference.cache
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.Form1.resources
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.Properties.Resources.resources
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.csproj.GenerateResource.cache
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.csproj.CoreCompileInputs.cache
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.exe
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsFormsApp2.pdb
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\MathNet.Numerics.dll
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\bin\Debug\MathNet.Numerics.xml
+G:\Code\GitHubRep\Shmakov_SC\lab06\WindowsFormsApp2\WindowsFormsApp2\obj\Debug\WindowsF.EA766B00.Up2Date
