@@ -62,17 +62,14 @@ namespace WindowsFormsApp2
                 double binEnd = binStart + binWidth;
                 double binCenter = binStart + binWidth / 2;
 
-                // Добавляем точку на график
                 double height = (double)bins[i] / (sample.Count * binWidth);
                 chart1.Series["Практика"].Points.AddXY(binCenter, height);
 
-                // Создаем кастомную подпись под интервалом
-                // Параметры: (начало_метки, конец_метки, текст)
+    
                 var label = new CustomLabel(binStart, binEnd, $"({binStart:F2}; {binEnd:F2}]", 0, LabelMarkStyle.LineSideMark);
                 chart1.ChartAreas[0].AxisX.CustomLabels.Add(label);
             }
 
-            // --- Логика построения кривой Гаусса ---
             int pointsCount = 100;
             double step = (8 * sigma) / pointsCount;
             for (int i = 0; i < pointsCount; i++)
@@ -88,14 +85,10 @@ namespace WindowsFormsApp2
         {
             int n = sample.Count;
 
-            // 1. Вычисляем эмпирическое среднее
             double mEmp = sample.Average();
 
-            // 2. Вычисляем эмпирическую дисперсию
             double dEmp = sample.Select(x => Math.Pow(x - mEmp, 2)).Sum() / n;
 
-            // 3. Вычисляем относительные погрешности (%)
-            // Используем Math.Abs для разности
 
             // Погрешность мат. ожидания
             double errorM = (mu != 0)
@@ -107,7 +100,6 @@ namespace WindowsFormsApp2
                 ? Math.Abs(varTeor - dEmp) / varTeor * 100
                 : Math.Abs(dEmp) * 100;
 
-            // 4. Вывод в интерфейс (например, в Label или RichTextBox)
             return $"Мат. ожидание: теор = {mu:F3}, эмп = {mEmp:F3} (погр: {errorM:F2}%)\n" +
             $"Дисперсия: теор = {varTeor:F3}, эмп = {dEmp:F3} (погр: {errorD:F2}%)";
         }
@@ -126,14 +118,14 @@ namespace WindowsFormsApp2
             int[] observed = new int[k];
             double chiObserved = 0;
 
-            // 1. Считаем частоты (сколько попало в каждый бин)
+            // Считаем частоты 
             foreach (var val in sample)
             {
                 int idx = (int)((val - minX) / step);
                 if (idx >= 0 && idx < k) observed[idx]++;
             }
 
-            // 2. Считаем статистику
+            // Считаем статистику
             for (int i = 0; i < k; i++)
             {
                 double a = minX + i * step;
@@ -141,7 +133,6 @@ namespace WindowsFormsApp2
                 double mid = (a + b) / 2.0;
 
                 // Теоретическая вероятность p_i через плотность в центре интервала
-                // (Приближение: высота колокола * ширина интервала)
                 double p_i = (1.0 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-Math.Pow(mid - mu, 2) / (2 * varTeor)) * step;
 
                 double expected = n * p_i;
@@ -152,8 +143,7 @@ namespace WindowsFormsApp2
                 }
             }
 
-            // 3. Сравнение с критическим значением
-            // Для k=10 (df=9) и alpha=0.05 критическое значение ~16.9
+
             double chiCritical = ChiSquared.InvCDF(df, 1 - alpha);
             bool isAccepted = chiObserved <= chiCritical;
 
@@ -173,8 +163,6 @@ namespace WindowsFormsApp2
                     double sum = 0;
                     for (int j = 0; j < 12; j++) sum += rnd.NextDouble();
 
-                    // (sum - 6) — это стандартное N(0, 1)
-                    // Умножаем на sigma и прибавляем mu
                     double val = mu + sigma * (sum - 6);
                     sample.Add(val);
                 }
