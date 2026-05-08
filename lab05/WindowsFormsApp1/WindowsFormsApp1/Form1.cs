@@ -26,6 +26,7 @@ namespace WindowsFormsApp1
         private static BigInteger c = 1013904223;
 
         private static BigInteger M = BigInteger.Pow(2, 32);
+
         public static double LKG()
         {
             lastSeed = (a*lastSeed + c) % M;
