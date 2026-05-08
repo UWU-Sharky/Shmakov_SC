@@ -1,14 +1,15 @@
-﻿using System;
+﻿using MathNet.Numerics.Distributions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using MathNet.Numerics.Distributions;
 
 namespace WindowsFormsApp2
 {
@@ -22,8 +23,8 @@ namespace WindowsFormsApp2
 
         private void Start_Click(object sender, EventArgs e)
         {
-            double mu = (double)Mean.Value;
-            double variance = (double)Variance.Value;
+            double mu = StringExtensions.ToDecimal(Mean.Text);
+            double variance = StringExtensions.ToDecimal(Variance.Text);
             double sigma = Math.Sqrt(variance);
             int n = (int)SampleSize.Value;
             int bins = (int)Bins.Value;
@@ -66,13 +67,12 @@ namespace WindowsFormsApp2
                 double height = (double)bins[i] / (sample.Count * binWidth);
                 chart1.Series["Практика"].Points.AddXY(binCenter, height);
 
-                // Создаем кастомную подпись под интервалом
-                // Параметры: (начало_метки, конец_метки, текст)
+                // Создаем подпись под интервалом
                 var label = new CustomLabel(binStart, binEnd, $"({binStart:F2}; {binEnd:F2}]", 0, LabelMarkStyle.LineSideMark);
                 chart1.ChartAreas[0].AxisX.CustomLabels.Add(label);
             }
 
-            // --- Логика построения кривой Гаусса ---
+            // Логика построения кривой Гаусса
             int pointsCount = 100;
             double step = (8 * sigma) / pointsCount;
             for (int i = 0; i < pointsCount; i++)
@@ -88,26 +88,18 @@ namespace WindowsFormsApp2
         {
             int n = sample.Count;
 
-            // 1. Вычисляем эмпирическое среднее
             double mEmp = sample.Average();
 
-            // 2. Вычисляем эмпирическую дисперсию
             double dEmp = sample.Select(x => Math.Pow(x - mEmp, 2)).Sum() / n;
 
-            // 3. Вычисляем относительные погрешности (%)
-            // Используем Math.Abs для разности
-
-            // Погрешность мат. ожидания
             double errorM = (mu != 0)
                 ? Math.Abs(mu - mEmp) / Math.Abs(mu) * 100
-                : Math.Abs(mEmp) * 100; // Если mu = 0, считаем абсолютное отклонение
+                : Math.Abs(mEmp) * 100; 
 
-            // Погрешность дисперсии
             double errorD = (varTeor != 0)
                 ? Math.Abs(varTeor - dEmp) / varTeor * 100
                 : Math.Abs(dEmp) * 100;
 
-            // 4. Вывод в интерфейс (например, в Label или RichTextBox)
             return $"Мат. ожидание: теор = {mu:F3}, эмп = {mEmp:F3} (погр: {errorM:F2}%)\n" +
             $"Дисперсия: теор = {varTeor:F3}, эмп = {dEmp:F3} (погр: {errorD:F2}%)";
         }
@@ -126,22 +118,21 @@ namespace WindowsFormsApp2
             int[] observed = new int[k];
             double chiObserved = 0;
 
-            // 1. Считаем частоты (сколько попало в каждый бин)
+            // Считаем частоты
             foreach (var val in sample)
             {
                 int idx = (int)((val - minX) / step);
                 if (idx >= 0 && idx < k) observed[idx]++;
             }
 
-            // 2. Считаем статистику
+            // Считаем статистику
             for (int i = 0; i < k; i++)
             {
                 double a = minX + i * step;
                 double b = a + step;
                 double mid = (a + b) / 2.0;
 
-                // Теоретическая вероятность p_i через плотность в центре интервала
-                // (Приближение: высота колокола * ширина интервала)
+
                 double p_i = (1.0 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-Math.Pow(mid - mu, 2) / (2 * varTeor)) * step;
 
                 double expected = n * p_i;
@@ -152,34 +143,72 @@ namespace WindowsFormsApp2
                 }
             }
 
-            // 3. Сравнение с критическим значением
-            // Для k=10 (df=9) и alpha=0.05 критическое значение ~16.9
+            // alpha=0.05 
             double chiCritical = ChiSquared.InvCDF(df, 1 - alpha);
             bool isAccepted = chiObserved <= chiCritical;
 
             return $"Хи-квадрат: Набл = {chiObserved:F3}, Крит = {chiCritical}\n" +
-            $"Результат: {(isAccepted ? "Гипотеза принята ✅" : "Гипотеза отвергнута ❌")}\n\n";
+            $"Результат: {(isAccepted ? "Гипотеза принята " : "Гипотеза отвергнута ")}\n\n";
         }
 
         public class Probability
         {
+            private static readonly Random rnd = new Random();
+
+            private double? _spareNormal = null;
+
             public List<double> GenerateNormalSample(double mu, double sigma, int n)
             {
-                Random rnd = new Random();
-                List<double> sample = new List<double>();
-
+                var sample = new List<double>(n);
                 for (int i = 0; i < n; i++)
                 {
-                    double sum = 0;
-                    for (int j = 0; j < 12; j++) sum += rnd.NextDouble();
-
-                    // (sum - 6) — это стандартное N(0, 1)
-                    // Умножаем на sigma и прибавляем mu
-                    double val = mu + sigma * (sum - 6);
-                    sample.Add(val);
+                    sample.Add(mu + sigma * NextGaussianBoxMuller());
                 }
                 return sample;
             }
+            private double NextGaussianBoxMuller()
+            {
+                if (_spareNormal.HasValue)
+                {
+                    double spare = _spareNormal.Value;
+                    _spareNormal = null;
+                    return spare;
+                }
+
+                double u1, u2;
+                do
+                {
+                    u1 = rnd.NextDouble();
+                } while (u1 == 0.0); 
+
+                u2 = rnd.NextDouble();
+
+                double magnitude = Math.Sqrt(-2.0 * Math.Log(u1));
+                double angle = 2.0 * Math.PI * u2;
+
+                double z1 = magnitude * Math.Cos(angle);
+                double z2 = magnitude * Math.Sin(angle);
+
+                // Одно возвращаем сейчас, второе кешируем
+                _spareNormal = z2;
+                return z1;
+            }
+        }
+    }
+    public static class StringExtensions
+    {
+        public static double ToDecimal(this string input)
+        {
+            if (string.IsNullOrWhiteSpace(input)) return 0;
+
+            string normalized = input.Replace(',', '.');
+
+            if (double.TryParse(normalized, NumberStyles.Any, CultureInfo.InvariantCulture, out double result))
+            {
+                return result;
+            }
+
+            return 0;
         }
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 namespace WindowsFormsApp1
 {
@@ -47,7 +48,6 @@ namespace WindowsFormsApp1
 
         private void UpdateChart(double[] xValues, double[] pValues, List<double> results)
         {
-            // 1. Очищаем старые данные
             chart1.Series["Теория"].Points.Clear();
             chart1.Series["Практика"].Points.Clear();
 
@@ -59,10 +59,8 @@ namespace WindowsFormsApp1
 
                 // Считаем, сколько раз значение x встретилось в выборке
                 int count = results.Count(r => r == x);
-                double empiricalFreq = (double)count / n; // Эмпирическая частота
+                double empiricalFreq = (double)count / n; 
 
-                // 2. Добавляем точки на график
-                // Аргумент 1: подпись по оси X, Аргумент 2: значение по оси Y
                 chart1.Series["Теория"].Points.AddXY(x, pValues[i]);
                 chart1.Series["Практика"].Points.AddXY(x, empiricalFreq);
             }
@@ -71,12 +69,29 @@ namespace WindowsFormsApp1
 
     public class Probability
     {
+        private static BigInteger lastSeed = 1;
+
+        private static BigInteger a = 1664525;
+
+        private static BigInteger c = 1013904223;
+
+        private static BigInteger M = BigInteger.Pow(2, 32);
+
+        public static double LKG()
+        {
+            lastSeed = (a * lastSeed + c) % M;
+
+            double x = (double)lastSeed / (double)M;
+
+            return x;
+        }
+
         public List<double> GenerateSample(double[] xValues, double[] pValues, int sampleSize)
         {
             Random rnd = new Random();
             List<double> sample = new List<double>();
 
-            // 1. Предварительно вычисляем кумулятивные вероятности (границы интервалов)
+            // Предварительно вычисляем кумулятивные вероятности (границы интервалов)
             double[] cumulativeP = new double[pValues.Length];
             double sum = 0;
             for (int i = 0; i < pValues.Length; i++)
@@ -85,12 +100,12 @@ namespace WindowsFormsApp1
                 cumulativeP[i] = sum;
             }
 
-            // 2. Цикл генерации выборки
+            // Цикл генерации выборки
             for (int s = 0; s < sampleSize; s++)
             {
-                double u = rnd.NextDouble(); // Число от 0.0 до 1.0
+                double u = LKG(); 
 
-                // 3. Поиск интервала
+                // Поиск интервала
                 for (int i = 0; i < cumulativeP.Length; i++)
                 {
                     if (u < cumulativeP[i])
@@ -105,7 +120,7 @@ namespace WindowsFormsApp1
 
         public string CalculateStatistics(double[] xValues, double[] pValues, List<double> sample)
         {
-            // --- Теоретические расчеты ---
+            // Теоретические расчеты 
             double mTeor = 0;
             double mSqTeor = 0;
             for (int i = 0; i < xValues.Length; i++)
@@ -115,16 +130,15 @@ namespace WindowsFormsApp1
             }
             double dTeor = mSqTeor - Math.Pow(mTeor, 2);
 
-            // --- Эмпирические расчеты (по выборке) ---
+            // Эмпирические расчеты
             double mEmp = sample.Average();
             double dEmp = sample.Select(val => Math.Pow(val - mEmp, 2)).Average();
 
-            // --- Погрешности (%) ---
-            // Добавляем проверку на 0, чтобы избежать деления на ноль
+            // Погрешности
             double errorM = mTeor != 0 ? Math.Abs((mTeor - mEmp) / mTeor) * 100 : 0;
             double errorD = dTeor != 0 ? Math.Abs((dTeor - dEmp) / dTeor) * 100 : 0;
 
-            // --- Вывод результатов (например, в Label или RichTextBox) ---
+            // Вывод результатов
             return $"Мат. ожидание: теор = {mTeor:F3}, эмп = {mEmp:F3} (погр: {errorM:F2}%)\n" +
             $"Дисперсия: теор = {dTeor:F3}, эмп = {dEmp:F3} (погр: {errorD:F2}%)";
         }
@@ -134,12 +148,12 @@ namespace WindowsFormsApp1
             int k = pValues.Length;
             double chiObserved = 0;
 
-            // 1. Считаем частоты выпадения каждого X
+            // Cчитаем частоты выпадения каждого X
             for (int i = 0; i < k; i++)
             {
                 double x = xValues[i];
-                int ni = sample.Count(val => val == x); // Сколько раз выпало x
-                double expected = n * pValues[i];      // Сколько должно было выпасть
+                int ni = sample.Count(val => val == x);
+                double expected = n * pValues[i];      
 
                 if (expected > 0)
                 {
@@ -147,13 +161,12 @@ namespace WindowsFormsApp1
                 }
             }
 
-            // 2. Сравниваем с критическим значением (для df = 4, alpha = 0.05)
+            // Сравниваем с критическим значением (для df = 4, alpha = 0.05)
             double chiCritical = 9.488;
             bool isHypothesisAccepted = chiObserved <= chiCritical;
 
-            // 3. Вывод
             return $"Chi-Square: {chiObserved:F3} (Крит: {chiCritical})\n" +
-            $"Результат: {(isHypothesisAccepted ? "Гипотеза принята ✅" : "Гипотеза отвергнута ❌")}";
+            $"Результат: {(isHypothesisAccepted ? "Гипотеза принята" : "Гипотеза отвергнута")}";
         }
     }
     public class Normalizer
@@ -207,7 +220,7 @@ namespace WindowsFormsApp1
             {
                 if (i == inputs.Count - 1)
                 {
-                    inputs[i].Value = 1.0m - runningSum; // Добираем остаток
+                    inputs[i].Value = 1.0m - runningSum;
                 }
                 else
                 {

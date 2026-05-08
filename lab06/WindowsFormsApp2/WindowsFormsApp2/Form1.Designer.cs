@@ -28,27 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.lblResults = new System.Windows.Forms.Label();
             this.Start = new System.Windows.Forms.Button();
             this.SampleSize = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.Variance = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.Mean = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.Variance = new System.Windows.Forms.TextBox();
+            this.Mean = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.Bins = new System.Windows.Forms.NumericUpDown();
             this.lblChi = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             ((System.ComponentModel.ISupportInitialize)(this.SampleSize)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Variance)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Mean)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Bins)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -83,7 +81,7 @@
             0,
             0,
             0});
-            this.SampleSize.Location = new System.Drawing.Point(118, 179);
+            this.SampleSize.Location = new System.Drawing.Point(118, 178);
             this.SampleSize.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -121,29 +119,6 @@
             this.label2.TabIndex = 6;
             this.label2.Text = "Дисперсия: ";
             // 
-            // Variance
-            // 
-            this.Variance.DecimalPlaces = 3;
-            this.Variance.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.Variance.Location = new System.Drawing.Point(118, 127);
-            this.Variance.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.Variance.Name = "Variance";
-            this.Variance.Size = new System.Drawing.Size(70, 20);
-            this.Variance.TabIndex = 5;
-            this.Variance.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -153,30 +128,17 @@
             this.label1.TabIndex = 4;
             this.label1.Text = "Среднее: ";
             // 
-            // Mean
-            // 
-            this.Mean.DecimalPlaces = 3;
-            this.Mean.Increment = new decimal(new int[] {
-            1,
-            0,
-            0,
-            196608});
-            this.Mean.Location = new System.Drawing.Point(118, 101);
-            this.Mean.Name = "Mean";
-            this.Mean.Size = new System.Drawing.Size(70, 20);
-            this.Mean.TabIndex = 3;
-            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.Variance);
+            this.groupBox1.Controls.Add(this.Mean);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.Bins);
             this.groupBox1.Controls.Add(this.Start);
             this.groupBox1.Controls.Add(this.SampleSize);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.Variance);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.Mean);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Left;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
@@ -184,6 +146,20 @@
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Параметры";
+            // 
+            // Variance
+            // 
+            this.Variance.Location = new System.Drawing.Point(118, 126);
+            this.Variance.Name = "Variance";
+            this.Variance.Size = new System.Drawing.Size(70, 20);
+            this.Variance.TabIndex = 20;
+            // 
+            // Mean
+            // 
+            this.Mean.Location = new System.Drawing.Point(118, 100);
+            this.Mean.Name = "Mean";
+            this.Mean.Size = new System.Drawing.Size(70, 20);
+            this.Mean.TabIndex = 19;
             // 
             // label3
             // 
@@ -196,7 +172,7 @@
             // 
             // Bins
             // 
-            this.Bins.Location = new System.Drawing.Point(118, 153);
+            this.Bins.Location = new System.Drawing.Point(118, 152);
             this.Bins.Maximum = new decimal(new int[] {
             20,
             0,
@@ -240,28 +216,28 @@
             // 
             // chart1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea1);
+            chartArea2.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea2);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Top;
-            legend1.Name = "Legend1";
-            this.chart1.Legends.Add(legend1);
+            legend2.Name = "Legend1";
+            this.chart1.Legends.Add(legend2);
             this.chart1.Location = new System.Drawing.Point(225, 0);
             this.chart1.Name = "chart1";
-            series1.BorderColor = System.Drawing.Color.Green;
-            series1.BorderWidth = 3;
-            series1.ChartArea = "ChartArea1";
-            series1.Color = System.Drawing.Color.PaleTurquoise;
-            series1.LabelFormat = "0.000";
-            series1.Legend = "Legend1";
-            series1.Name = "Практика";
-            series2.BorderWidth = 5;
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
-            series2.Color = System.Drawing.Color.Tomato;
-            series2.Legend = "Legend1";
-            series2.Name = "Теория";
-            this.chart1.Series.Add(series1);
-            this.chart1.Series.Add(series2);
+            series3.BorderColor = System.Drawing.Color.Green;
+            series3.BorderWidth = 3;
+            series3.ChartArea = "ChartArea1";
+            series3.Color = System.Drawing.Color.PaleTurquoise;
+            series3.LabelFormat = "0.000";
+            series3.Legend = "Legend1";
+            series3.Name = "Практика";
+            series4.BorderWidth = 5;
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Spline;
+            series4.Color = System.Drawing.Color.Tomato;
+            series4.Legend = "Legend1";
+            series4.Name = "Теория";
+            this.chart1.Series.Add(series3);
+            this.chart1.Series.Add(series4);
             this.chart1.Size = new System.Drawing.Size(575, 331);
             this.chart1.TabIndex = 5;
             this.chart1.Text = "chart1";
@@ -277,8 +253,6 @@
             this.Name = "Form1";
             this.Text = "Laboratory 6.2";
             ((System.ComponentModel.ISupportInitialize)(this.SampleSize)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Variance)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Mean)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Bins)).EndInit();
@@ -296,15 +270,15 @@
         private System.Windows.Forms.NumericUpDown SampleSize;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.NumericUpDown Variance;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.NumericUpDown Mean;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lblChi;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown Bins;
+        private System.Windows.Forms.TextBox Variance;
+        private System.Windows.Forms.TextBox Mean;
     }
 }
 
