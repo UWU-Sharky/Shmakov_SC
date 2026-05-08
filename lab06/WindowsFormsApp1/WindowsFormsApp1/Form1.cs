@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -69,6 +70,7 @@ namespace WindowsFormsApp1
 
     public class Probability
     {
+<<<<<<< HEAD
         private static BigInteger lastSeed = 1;
 
         private static BigInteger a = 1664525;
@@ -86,12 +88,17 @@ namespace WindowsFormsApp1
             return x;
         }
 
+=======
+        Random rnd = new Random();
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
         public List<double> GenerateSample(double[] xValues, double[] pValues, int sampleSize)
         {
-            Random rnd = new Random();
             List<double> sample = new List<double>();
 
+<<<<<<< HEAD
             // Предварительно вычисляем кумулятивные вероятности (границы интервалов)
+=======
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             double[] cumulativeP = new double[pValues.Length];
             double sum = 0;
             for (int i = 0; i < pValues.Length; i++)
@@ -100,12 +107,19 @@ namespace WindowsFormsApp1
                 cumulativeP[i] = sum;
             }
 
+<<<<<<< HEAD
             // Цикл генерации выборки
             for (int s = 0; s < sampleSize; s++)
             {
                 double u = LKG(); 
 
                 // Поиск интервала
+=======
+            for (int s = 0; s < sampleSize; s++)
+            {
+                double u = rnd.NextDouble()
+
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
                 for (int i = 0; i < cumulativeP.Length; i++)
                 {
                     if (u < cumulativeP[i])
@@ -120,7 +134,10 @@ namespace WindowsFormsApp1
 
         public string CalculateStatistics(double[] xValues, double[] pValues, List<double> sample)
         {
+<<<<<<< HEAD
             // Теоретические расчеты 
+=======
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             double mTeor = 0;
             double mSqTeor = 0;
             for (int i = 0; i < xValues.Length; i++)
@@ -134,11 +151,19 @@ namespace WindowsFormsApp1
             double mEmp = sample.Average();
             double dEmp = sample.Select(val => Math.Pow(val - mEmp, 2)).Average();
 
+<<<<<<< HEAD
             // Погрешности
             double errorM = mTeor != 0 ? Math.Abs((mTeor - mEmp) / mTeor) * 100 : 0;
             double errorD = dTeor != 0 ? Math.Abs((dTeor - dEmp) / dTeor) * 100 : 0;
 
             // Вывод результатов
+=======
+            //Погрешности 
+            double errorM = mTeor != 0 ? Math.Abs((mTeor - mEmp) / mTeor) * 100 : 0;
+            double errorD = dTeor != 0 ? Math.Abs((dTeor - dEmp) / dTeor) * 100 : 0;
+
+      
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             return $"Мат. ожидание: теор = {mTeor:F3}, эмп = {mEmp:F3} (погр: {errorM:F2}%)\n" +
             $"Дисперсия: теор = {dTeor:F3}, эмп = {dEmp:F3} (погр: {errorD:F2}%)";
         }
@@ -148,7 +173,11 @@ namespace WindowsFormsApp1
             int k = pValues.Length;
             double chiObserved = 0;
 
+<<<<<<< HEAD
             // Cчитаем частоты выпадения каждого X
+=======
+            // Считаем частоты выпадения каждого X
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             for (int i = 0; i < k; i++)
             {
                 double x = xValues[i];
@@ -161,7 +190,11 @@ namespace WindowsFormsApp1
                 }
             }
 
+<<<<<<< HEAD
             // Сравниваем с критическим значением (для df = 4, alpha = 0.05)
+=======
+            // Сравниваем с критическим значением 
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             double chiCritical = 9.488;
             bool isHypothesisAccepted = chiObserved <= chiCritical;
 

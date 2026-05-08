@@ -63,16 +63,22 @@ namespace WindowsFormsApp2
                 double binEnd = binStart + binWidth;
                 double binCenter = binStart + binWidth / 2;
 
-                // Добавляем точку на график
                 double height = (double)bins[i] / (sample.Count * binWidth);
                 chart1.Series["Практика"].Points.AddXY(binCenter, height);
 
+<<<<<<< HEAD
                 // Создаем подпись под интервалом
+=======
+    
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
                 var label = new CustomLabel(binStart, binEnd, $"({binStart:F2}; {binEnd:F2}]", 0, LabelMarkStyle.LineSideMark);
                 chart1.ChartAreas[0].AxisX.CustomLabels.Add(label);
             }
 
+<<<<<<< HEAD
             // Логика построения кривой Гаусса
+=======
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             int pointsCount = 100;
             double step = (8 * sigma) / pointsCount;
             for (int i = 0; i < pointsCount; i++)
@@ -92,6 +98,11 @@ namespace WindowsFormsApp2
 
             double dEmp = sample.Select(x => Math.Pow(x - mEmp, 2)).Sum() / n;
 
+<<<<<<< HEAD
+=======
+
+            // Погрешность мат. ожидания
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             double errorM = (mu != 0)
                 ? Math.Abs(mu - mEmp) / Math.Abs(mu) * 100
                 : Math.Abs(mEmp) * 100; 
@@ -118,7 +129,11 @@ namespace WindowsFormsApp2
             int[] observed = new int[k];
             double chiObserved = 0;
 
+<<<<<<< HEAD
             // Считаем частоты
+=======
+            // Считаем частоты 
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             foreach (var val in sample)
             {
                 int idx = (int)((val - minX) / step);
@@ -132,7 +147,11 @@ namespace WindowsFormsApp2
                 double b = a + step;
                 double mid = (a + b) / 2.0;
 
+<<<<<<< HEAD
 
+=======
+                // Теоретическая вероятность p_i через плотность в центре интервала
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
                 double p_i = (1.0 / (sigma * Math.Sqrt(2 * Math.PI))) * Math.Exp(-Math.Pow(mid - mu, 2) / (2 * varTeor)) * step;
 
                 double expected = n * p_i;
@@ -143,7 +162,11 @@ namespace WindowsFormsApp2
                 }
             }
 
+<<<<<<< HEAD
             // alpha=0.05 
+=======
+
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
             double chiCritical = ChiSquared.InvCDF(df, 1 - alpha);
             bool isAccepted = chiObserved <= chiCritical;
 
@@ -162,7 +185,15 @@ namespace WindowsFormsApp2
                 var sample = new List<double>(n);
                 for (int i = 0; i < n; i++)
                 {
+<<<<<<< HEAD
                     sample.Add(mu + sigma * NextGaussianBoxMuller());
+=======
+                    double sum = 0;
+                    for (int j = 0; j < 12; j++) sum += rnd.NextDouble();
+
+                    double val = mu + sigma * (sum - 6);
+                    sample.Add(val);
+>>>>>>> f17ddabacb0dd8b9b0186a7373780925be04f48e
                 }
                 return sample;
             }
