@@ -1,0 +1,99 @@
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: #f0f2f5; 
+    padding: 40px 20px;
+    color: #333;
+}
+
+.container { 
+    max-width: 900px; 
+    margin: 0 auto; 
+    background: white; 
+    padding: 30px; 
+    border-radius: 12px; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); 
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1a73e8;
+}
+
+/* Контейнер для полей ввода */
+.controls { 
+    display: flex;
+    flex-wrap: wrap; /* Чтобы блоки переносились на новую строку, если мало места */
+    gap: 20px; 
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    align-items: flex-end; /* Выравнивание по нижней линии (чтобы кнопка была вровень с инпутами) */
+}
+
+/* Стилизация каждой группы "Label + Input" */
+.input-group { 
+    flex: 1; /* Группы будут растягиваться равномерно */
+    min-width: 180px; /* Но не станут уже 180px */
+}
+
+.input-group label { 
+    display: block; 
+    margin-bottom: 8px; 
+    font-size: 0.9em;
+    font-weight: 600; 
+    color: #555;
+}
+
+input { 
+    width: 100%; 
+    padding: 10px; 
+    border: 1px solid #ced4da; 
+    border-radius: 6px; 
+    font-size: 1em;
+    box-sizing: border-box; /* Важно: чтобы padding не раздувал ширину */
+}
+
+input:focus {
+    outline: none;
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26,115,232,0.2);
+}
+
+button { 
+    padding: 11px 25px; 
+    background: #1a73e8; 
+    color: white; 
+    border: none; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-weight: 600;
+    transition: background 0.2s;
+    height: 42px; /* Фиксированная высота вровень с инпутами */
+}
+
+button:hover { 
+    background: #1557b0; 
+}
+
+/* Блок статистики */
+.stats { 
+    display: flex; 
+    justify-content: center;
+    gap: 50px; 
+    font-size: 1.1em; 
+    margin: 20px 0;
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.stats span {
+    font-weight: bold;
+    color: #d93025; /* Выделим цветом значения */
+}
+
+canvas {
+    margin-top: 20px;
+    max-height: 400px;
+}
