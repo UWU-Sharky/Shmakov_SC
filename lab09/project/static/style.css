@@ -1,0 +1,36 @@
+body {
+    font-family: Arial;
+    background: #f2f2f2;
+    padding: 20px;
+}
+
+.container {
+    width: 1000px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+.form-block {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+input {
+    padding: 10px;
+    width: 180px;
+}
+
+button {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.charts {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+}

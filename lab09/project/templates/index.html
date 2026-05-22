@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Симуляция СМО (M/M/N)</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Симуляция СМО (M/M/N)</h1>
+
+    <div class="form-block">
+
+        <input type="number" id="lambda" placeholder="λ">
+
+        <input type="number" id="mu" placeholder="μ">
+
+        <input type="number" id="N" placeholder="Количество операторов">
+
+        <input type="number" id="T" placeholder="Время моделирования">
+
+        <button onclick="runSimulation()">
+            Запустить
+        </button>
+
+    </div>
+
+    <div class="stats">
+
+    <h2>Статистика</h2>
+
+    <p id="avg_wait"></p>
+
+    <p id="avg_clients"></p>
+
+    <p id="avg_queue"></p>
+
+    <p id="rho"></p>
+
+    </div>
+
+    <div class="charts">
+
+        <canvas id="statesChart"></canvas>
+
+        <canvas id="waitChart"></canvas>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>
