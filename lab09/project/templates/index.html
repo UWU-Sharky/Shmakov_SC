@@ -2,25 +2,22 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Симуляция СМО (M/M/N)</title>
+    <title>Симуляция СМО (M/M/1)</title>
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
 <div class="container">
 
-    <h1>Симуляция СМО (M/M/N)</h1>
+    <h1>Симуляция СМО (M/M/1)</h1>
 
     <div class="form-block">
 
         <input type="number" id="lambda" placeholder="λ">
 
         <input type="number" id="mu" placeholder="μ">
-
-        <input type="number" id="N" placeholder="Количество операторов">
 
         <input type="number" id="T" placeholder="Время моделирования">
 
@@ -34,21 +31,11 @@
 
     <h2>Статистика</h2>
 
-    <p id="avg_wait"></p>
+    <p id="served"></p>
 
-    <p id="avg_clients"></p>
-
-    <p id="avg_queue"></p>
+    <p id="lost"></p>
 
     <p id="rho"></p>
-
-    </div>
-
-    <div class="charts">
-
-        <canvas id="statesChart"></canvas>
-
-        <canvas id="waitChart"></canvas>
 
     </div>
 

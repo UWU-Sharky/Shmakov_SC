@@ -28,9 +28,3 @@ button {
     padding: 10px 20px;
     cursor: pointer;
 }
-
-.charts {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 40px;
-}
