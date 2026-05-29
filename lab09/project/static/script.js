@@ -29,9 +29,9 @@ async function runSimulation() {
 function showStatistics(stats) {
 
     document.getElementById('served').innerHTML =
-        `Вероятность обслужить заявку: ${stats.served.toFixed(3)}`;
+        `Вероятность обслужить заявку: ${stats.acceptance_probability.toFixed(3)}`;
 
     document.getElementById('lost').innerHTML =
-        `Вероятность потерять заявку: ${stats.lost.toFixed(3)}`;
+        `Вероятность потерять заявку: ${stats.loss_probability.toFixed(3)}`;
 
 }
