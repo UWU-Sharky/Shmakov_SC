@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Имитационное моделирование M/M/c/K</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        canvas { max-height: 250px; }
+    </style>
+</head>
+<body class="p-6 text-gray-800">
+
+    <div class="max-w-7xl mx-auto space-y-6">
+        
+        <!-- Заголовок -->
+        <header class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                    Имитационное моделирование банка   
+                </h1>
+            </div>
+            <div class="flex items-center gap-4 bg-gray-50 px-4 py-2 rounded-xl border border-gray-100">
+                <span class="text-sm font-medium text-gray-600">Статус системы:</span>
+                <span id="sim-status" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-800">
+                    <span class="w-2 h-2 rounded-full bg-slate-400"></span> Готова к запуску
+                </span>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            
+            <!-- Панель управления (Параметры) -->
+            <aside class="space-y-6 lg:col-span-1">
+                <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm space-y-4">
+                    <h2 class="text-lg font-semibold mb-4 border-b pb-2 flex items-center gap-2">
+                        Параметры системы
+                    </h2>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Кол-во приборов (c)</label>
+                            <input type="number" id="param-ops" value="3" min="1" class="mt-1 block w-full rounded-xl border-gray-200 bg-gray-50 border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Макс. длина очереди (K)</label>
+                            <input type="number" id="param-queue" value="5" min="0" class="mt-1 block w-full rounded-xl border-gray-200 bg-gray-50 border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Поток клиентов (λ)</label>
+                            <input type="number" id="param-arr" value="4.0" step="0.1" class="mt-1 block w-full rounded-xl border-gray-200 bg-gray-50 border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Интенс. работы (μ)</label>
+                            <input type="number" id="param-srv" value="1.5" step="0.1" class="mt-1 block w-full rounded-xl border-gray-200 bg-gray-50 border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Интенс. нетерпения (ν)</label>
+                            <input type="number" id="param-pat" value="0.8" step="0.1" class="mt-1 block w-full rounded-xl border-gray-200 bg-gray-50 border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-gray-500 uppercase">Время моделирования (T)</label>
+                            <input type="number" id="param-time" value="1000" min="10" class="mt-1 block w-full rounded-xl border-gray-200 bg-gray-50 border p-2.5 text-sm focus:border-blue-500 focus:ring-blue-500 outline-none transition">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <button id="btn-start" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-xl transition shadow-sm hover:shadow flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play"></i> Запустить модель
+                        </button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Блок вывода результатов и графиков -->
+            <main class="lg:col-span-3 space-y-6">
+
+                <!-- Метрики (Cards) -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between border-l-4 border-l-emerald-500">
+                        <p class="text-xs font-bold text-gray-400 uppercase">Вероятность обслуживания</p>
+                        <p class="text-2xl font-bold text-emerald-600 mt-2" id="metric-p-serve">0.0%</p>
+                        <span class="text-[10px] text-gray-400 mt-1">Доля успешно обработанных</span>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between border-l-4 border-l-rose-500">
+                        <p class="text-xs font-bold text-gray-400 uppercase">Вероятность потери</p>
+                        <p class="text-2xl font-bold text-rose-600 mt-2" id="metric-p-drop">0.0%</p>
+                        <span class="text-[10px] text-gray-400 mt-1">Отказ очереди + уход</span>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between border-l-4 border-l-blue-500">
+                        <p class="text-xs font-bold text-gray-400 uppercase">Ср. длина очереди</p>
+                        <p class="text-2xl font-bold text-slate-800 mt-2" id="metric-avg-q">0.00</p>
+                        <span class="text-[10px] text-gray-400 mt-1">Взвешенная по времени</span>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between border-l-4 border-l-purple-500">
+                        <p class="text-xs font-bold text-gray-400 uppercase">Ср. время ожидания</p>
+                        <p class="text-2xl font-bold text-slate-800 mt-2" id="metric-avg-w">0.00</p>
+                        <span class="text-[10px] text-gray-400 mt-1">Для всех клиентов в очереди</span>
+                    </div>
+                </div>
+
+                <!-- Детальная статистика -->
+                <div class="bg-white rounded-xl shadow-sm p-4 border border-gray-100 flex flex-wrap gap-6 text-sm text-gray-600">
+                    <div>Всего поступило: <span id="stat_total" class="font-bold text-gray-900">0</span></div>
+                    <div>Успешно обслужено: <span id="stat_served" class="font-bold text-emerald-600">0</span></div>
+                    <div>Ушло из-за нетерпения: <span id="stat_abandoned" class="font-bold text-orange-500">0</span></div>
+                    <div>Отказ (очередь полна): <span id="stat_rejected" class="font-bold text-rose-600">0</span></div>
+                </div>
+
+                <!-- Графики -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-bar text-blue-500"></i> Число занятых приборов (доля времени)
+                        </h3>
+                        <div class="flex-grow">
+                            <canvas id="chart-ops"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-bar text-emerald-500"></i> Длина очереди (доля времени)
+                        </h3>
+                        <div class="flex-grow">
+                            <canvas id="chart-queue"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col md:col-span-2">
+                        <h3 class="text-sm font-bold text-gray-500 uppercase mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-chart-area text-amber-500"></i> Распределение времени ожидания (кол-во заявок)
+                        </h3>
+                        <div class="flex-grow">
+                            <canvas id="chart-wait" style="height: 220px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>
