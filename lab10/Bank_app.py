@@ -77,12 +77,10 @@ class BankSystem:
         self.service_rate = service_rate
         self.patience_rate = patience_rate
         
-        # Инициализация агентов
         self.generator = Generator(arrival_rate)
         self.operators = [Operator(i) for i in range(num_operators)]
         self.active_clients = []
         
-        # Списки для накопления точного времени нахождения в состояниях (доли времени)
         self.time_in_queue = [0.0] * (max_queue + 1)
         self.time_in_ops = [0.0] * (num_operators + 1)
         
@@ -141,7 +139,6 @@ class BankSystem:
                     
             # Обработка выхода за границы времени или отсутствия событий
             if t_min == math.inf or t_min > max_time:
-                # Начисляем время, проведенное в текущем состоянии до конца симуляции
                 delta_t = max_time - self.time
                 if delta_t > 0:
                     current_q_len = len(self.queue)
@@ -152,7 +149,6 @@ class BankSystem:
                 self.time = max_time
                 break
                 
-            # Шаг модельного времени (разница между текущим и будущим событием)
             delta_t = t_min - self.time
             if delta_t > 0:
                 current_q_len = len(self.queue)

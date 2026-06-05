@@ -28,9 +28,9 @@ class BankSimulationGUI:
         params = [
             ("Количество операторов:", "num_ops", 2),
             ("Максимальная длина очереди:", "max_queue", 10),
-            ("Интенсивность входящего потока (λ):", "arr_rate", 0.8),
-            ("Интенсивность обслуживания (μ):", "srv_rate", 1.0),
-            ("Интенсивность терпения (θ):", "pat_rate", 0.5),
+            ("Интенсивность входящего потока:", "arr_rate", 0.8),
+            ("Интенсивность обслуживания:", "srv_rate", 1.0),
+            ("Интенсивность терпения:", "pat_rate", 0.5),
             ("Время моделирования:", "time_limit", 1000.0)
         ]
         
@@ -42,7 +42,6 @@ class BankSimulationGUI:
             entry.grid(row=i, column=1, padx=5, pady=5)
             self.entries[key] = entry
         
-        # Кнопка запуска
         self.run_button = ttk.Button(input_frame, text="Запустить моделирование", 
                                      command=self.run_simulation)
         self.run_button.grid(row=len(params), column=0, columnspan=2, pady=10)
@@ -57,7 +56,6 @@ class BankSimulationGUI:
         self.results_tree.heading("#0", text="Показатель")
         self.results_tree.heading("value", text="Значение")
         
-        # Добавляем показатели
         metrics = [
             "Вероятность обслуживания",
             "Вероятность отказа",
@@ -125,6 +123,10 @@ class BankSimulationGUI:
                 'time_limit': float(self.entries['time_limit'].get())
             }
             
+            if any(val < 0 for val in params.values()):
+                messagebox.showerror("Ошибка валидации", "Все параметры моделирования должны быть неотрицательными!")
+                return
+            
             # Запускаем моделирование
             model = BankSystem(
                 num_operators=params['num_ops'],
@@ -188,7 +190,6 @@ class BankSimulationGUI:
         x1 = range(num_operators + 1)
         self.ax1.bar(x1, busy_probs, alpha=0.7, color='steelblue')
         self.ax1.set_xlabel('Число занятых приборов')
-        self.ax1.set_ylabel('Доля времени')
         self.ax1.set_title('Распределение числа занятых приборов')
         self.ax1.grid(True, alpha=0.3)
         self.ax1.set_xticks(x1)
@@ -210,7 +211,6 @@ class BankSimulationGUI:
         x2 = range(len(queue_probs))
         self.ax2.bar(x2, queue_probs, alpha=0.7, color='coral')
         self.ax2.set_xlabel('Длина очереди')
-        self.ax2.set_ylabel('Доля времени')
         self.ax2.set_title('Распределение длины очереди')
         self.ax2.grid(True, alpha=0.3)
         
@@ -224,45 +224,42 @@ class BankSimulationGUI:
         # График 3: Гистограмма времени ожидания
         wait_times = model.stats['wait_times']
         if wait_times:
-            # Создаем гистограмму
-            n, bins, patches = self.ax3.hist(wait_times, bins=30, alpha=0.7, 
-                                             color='forestgreen', edgecolor='black', linewidth=0.5)
+            # Разбиваем на интервалы (например, 15 интервалов)
+            num_bins = min(15, len(set(wait_times)))  # не больше 15, но и не больше уникальных значений
+            if num_bins < 2:
+                num_bins = 2
+                
+            counts, bin_edges = np.histogram(wait_times, bins=num_bins, density=False)
+            total = len(wait_times)
+            probs = counts / total  # вероятности попадания в интервал
             
-            # Добавляем кривую плотности (если есть данные)
-            if len(wait_times) > 1:
-                kde = stats.gaussian_kde(wait_times)
-                x_range = np.linspace(min(wait_times), max(wait_times), 100)
-                y_range = kde(x_range) * len(wait_times) * (bins[1] - bins[0])
-                self.ax3.plot(x_range, y_range, 'r-', linewidth=2, label='Плотность распределения')
+            # Для столбчатой диаграммы используем середины интервалов
+            bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+            bin_width = bin_edges[1] - bin_edges[0]
             
-            # Добавляем среднее значение
-            avg_wait = np.mean(wait_times)
-            self.ax3.axvline(avg_wait, color='red', linestyle='--', linewidth=2, 
-                            label=f'Среднее: {avg_wait:.3f}')
+            self.ax3.bar(bin_centers, probs, width=bin_width*0.9, alpha=0.7, color='forestgreen', edgecolor='black', linewidth=0.5)
             
+            max_prob = max(probs)
+            # Формируем 5-6 аккуратных делений от 0 до max_prob с округлением
+            y_ticks = np.linspace(0, max_prob, 6)
+            self.ax3.set_yticks(y_ticks)
+            # Форматируем подписи до 2 или 3 знаков после запятой
+            self.ax3.set_yticklabels([f'{y:.2f}' for y in y_ticks], fontsize=9)
+            # ----------------------------------
+
             self.ax3.set_xlabel('Время ожидания')
-            self.ax3.set_ylabel('Частота')
             self.ax3.set_title('Распределение времени ожидания в очереди')
-            self.ax3.legend()
             self.ax3.grid(True, alpha=0.3)
             
-            # Добавляем статистику на график
-            stats_text = f'n = {len(wait_times)}\n'
-            stats_text += f'Мин = {min(wait_times):.3f}\n'
-            stats_text += f'Макс = {max(wait_times):.3f}\n'
-            stats_text += f'Ср. = {avg_wait:.3f}\n'
-            stats_text += f'Ст. откл. = {np.std(wait_times):.3f}'
-            
-            self.ax3.text(0.98, 0.98, stats_text, transform=self.ax3.transAxes,
-                         fontsize=9, verticalalignment='top', horizontalalignment='right',
-                         bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+            # Добавляем подписи значений на столбцах (если вероятность > 0.03)
+            for center, prob in zip(bin_centers, probs):
+                if prob > 0.03:
+                    self.ax3.text(center, prob + max_prob * 0.02, f'{prob:.3f}', ha='center', fontsize=8)
         else:
-            self.ax3.text(0.5, 0.5, 'Нет данных об ожидании', 
-                         transform=self.ax3.transAxes, ha='center', va='center')
+            self.ax3.text(0.5, 0.5, 'Нет данных об ожидании', transform=self.ax3.transAxes, ha='center', va='center')
             self.ax3.set_xlabel('Время ожидания')
-            self.ax3.set_ylabel('Частота')
             self.ax3.set_title('Распределение времени ожидания в очереди')
-        
+            
         self.canvas3.draw()
 
 def main():
